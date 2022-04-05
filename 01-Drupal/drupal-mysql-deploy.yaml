@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal-mysql
+  labels:
+    app: drupal-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+        - name: drupal-mysql-storage
+          persistentVolumeClaim:
+            claimName: drupal-mysql-pvc
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          envFrom:
+            - secretRef:
+                name: drupal-mysql-secret
+          ports:
+            - containerPort: 8090
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: drupal-mysql-storage
+              subPath: dbdata

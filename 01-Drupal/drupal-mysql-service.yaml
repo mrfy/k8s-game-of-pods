@@ -5,8 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: metrics
-    department: sales
+    app: drupal-mysql
   ports:
     - protocol: TCP
       port: 3306
