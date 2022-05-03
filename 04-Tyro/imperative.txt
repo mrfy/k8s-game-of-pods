@@ -1,0 +1,43 @@
+1. kubectl config set-context developer --cluster=kubernetes --user=drogo
+2. kubectl config set-credentials drogo --client-key=/root/drogo.key --client-certificate=/root/drogo.crt 
+
+
+3. kubectl create role developer-role --verb=* --resource=services,pvc,pods -n development 
+-- OR --
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-role
+  namespace: development
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - persistentvolumeclaims
+  - pods
+  verbs:
+  - '*'
+
+
+4. kubectl create rolebinding developer-rolebinding --role=developer-role --user=drogo 
+-- OR --
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: development
+  name: developer-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: developer-role
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: drogo
+
+
+5. kubectl config use-context developer
+
+//Zyhys perzys stepagon schedulara Oño resarc, se poda lys qelitsos sikagon
+
