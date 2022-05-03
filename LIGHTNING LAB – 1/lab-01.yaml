@@ -1,3 +1,8 @@
+#
+#
+# PersistentVolume
+#
+#
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -10,7 +15,12 @@ spec:
     - ReadWriteMany
   hostPath:
     path: '/opt/volume/nginx'
-
+---
+#
+#
+# PersistentVolumeClaim
+#
+#
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -22,30 +32,24 @@ spec:
     requests:
       storage: 200Mi
   storageClassName: manual
-  selector:
-    matchLabels:
-      name: "log-volume"
-
-
-
+---
+#
+#
+# Pod
+#
+#
 apiVersion: v1
 kind: Pod
 metadata:
-  name: task-pv-pod
+  name: logger
 spec:
-  nodeSelector:
-    kubernetes.io/hostname: kube-01
-  volumes:
-    - name: task-pv-storage
-      persistentVolumeClaim:
-        claimName: task-pv-claim
   containers:
-    - name: task-pv-container
-      image: nginx
-      ports:
-        - containerPort: 80
-          name: "http-server"
+    - image: nginx:alpine
+      name: nginx
       volumeMounts:
-        - mountPath: "/usr/share/nginx/html"
-          name: task-pv-storage
-
+        - mountPath: /var/www/nginx
+          name: logs
+  volumes:
+    - name: logs
+      persistentVolumeClaim:
+        claimName: log-claim
