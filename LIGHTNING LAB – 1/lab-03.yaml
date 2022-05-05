@@ -1,0 +1,34 @@
+# k create namespace dvl1987
+
+# kubectl create configmap time-config --from-literal=TIME_FREQ=10 --namespace="dvl1987" --dry-run=client -o yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: time-check
+  name: time-check
+  namespace: dvl1987
+spec:
+  containers:
+    - image: busybox
+      name: time-check
+      command:
+        [
+          '/bin/sh',
+          '-c',
+          'while true; do date; sleep $TIME_FREQ; done >> /opt/time/time-check.log',
+        ]
+      env:
+        - name: TIME_FREQ
+          valueFrom:
+            configMapKeyRef:
+              name: time-config
+              key: TIME_FREQ
+      volumeMounts:
+        - mountPath: /opt/time
+          name: time-volume
+  volumes:
+    - name: time-volume
+      emptyDir: {}
