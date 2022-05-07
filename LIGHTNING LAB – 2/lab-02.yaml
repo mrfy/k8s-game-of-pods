@@ -1,21 +1,18 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  creationTimestamp: null
-  name: my-job
+  name: dice
 spec:
+  schedule: '* * * * *'
+  concurrencyPolicy: 'Forbid'
   jobTemplate:
-    metadata:
-      creationTimestamp: null
-      name: my-job
     spec:
+      backoffLimit: 25
+      completions: 1
+      activeDeadlineSeconds: 20
       template:
-        metadata:
-          creationTimestamp: null
         spec:
           containers:
-            - image: busybox
-              name: my-job
-              resources: {}
-          restartPolicy: OnFailure
-  schedule: '*/1 * * * *'
+            - image: kodekloud/throw-dice
+              name: throw-dice
+          restartPolicy: Never
