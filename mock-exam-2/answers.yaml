@@ -1,0 +1,317 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: beta-apps
+  name: beta-apps
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: beta-apps
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: beta-apps
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: app_type
+                    operator: In
+                    values:
+                      - beta
+      containers:
+        - image: nginx
+          name: nginx
+          resources: {}
+status: {}
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: minimal-ingress
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   ingressClassName: nginx-example
+#   rules:
+#   - host: ckad-mock-exam-solution.com
+#     http:
+#       paths:
+#       - path: /video
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: my-video-service
+#             port:
+#               number: 8080
+
+
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   creationTimestamp: "2022-05-07T13:08:16Z"
+#   labels:
+#     name: pod-with-rprobe
+#   managedFields:
+#   - apiVersion: v1
+#     fieldsType: FieldsV1
+#     fieldsV1:
+#       f:metadata:
+#         f:labels:
+#           .: {}
+#           f:name: {}
+#       f:spec:
+#         f:containers:
+#           k:{"name":"pod-with-rprobe"}:
+#             .: {}
+#             f:env:
+#               .: {}
+#               k:{"name":"APP_START_DELAY"}:
+#                 .: {}
+#                 f:name: {}
+#                 f:value: {}
+#             f:image: {}
+#             f:imagePullPolicy: {}
+#             f:name: {}
+#             f:ports:
+#               .: {}
+#               k:{"containerPort":8080,"protocol":"TCP"}:
+#                 .: {}
+#                 f:containerPort: {}
+#                 f:protocol: {}
+#             f:resources: {}
+#             f:terminationMessagePath: {}
+#             f:terminationMessagePolicy: {}
+#         f:dnsPolicy: {}
+#         f:enableServiceLinks: {}
+#         f:restartPolicy: {}
+#         f:schedulerName: {}
+#         f:securityContext: {}
+#         f:terminationGracePeriodSeconds: {}
+#     manager: python-requests
+#     operation: Update
+#     time: "2022-05-07T13:08:16Z"
+#   - apiVersion: v1
+#     fieldsType: FieldsV1
+#     fieldsV1:
+#       f:status:
+#         f:conditions:
+#           k:{"type":"ContainersReady"}:
+#             .: {}
+#             f:lastProbeTime: {}
+#             f:lastTransitionTime: {}
+#             f:status: {}
+#             f:type: {}
+#           k:{"type":"Initialized"}:
+#             .: {}
+#             f:lastProbeTime: {}
+#             f:lastTransitionTime: {}
+#             f:status: {}
+#             f:type: {}
+#           k:{"type":"Ready"}:
+#             .: {}
+#             f:lastProbeTime: {}
+#             f:lastTransitionTime: {}
+#             f:status: {}
+#             f:type: {}
+#         f:containerStatuses: {}
+#         f:hostIP: {}
+#         f:phase: {}
+#         f:podIP: {}
+#         f:podIPs:
+#           .: {}
+#           k:{"ip":"10.50.192.3"}:
+#             .: {}
+#             f:ip: {}
+#         f:startTime: {}
+#     manager: kubelet
+#     operation: Update
+#     time: "2022-05-07T13:08:34Z"
+#   name: pod-with-rprobe
+#   namespace: default
+#   resourceVersion: "2895"
+#   uid: bd5fb945-5248-44ac-b883-fe498f9eb4ff
+# spec:
+#   containers:
+#   - env:
+#     - name: APP_START_DELAY
+#       value: "180"
+#     image: kodekloud/webapp-delayed-start
+#     imagePullPolicy: Always
+#     name: pod-with-rprobe
+#     readinessProbe:
+#       httpGet:
+#         path: /ready
+#         port: 8080
+#       initialDelaySeconds: 5
+#       periodSeconds: 10    
+#     ports:
+#     - containerPort: 8080
+#       protocol: TCP
+#     resources: {}
+#     terminationMessagePath: /dev/termination-log
+#     terminationMessagePolicy: File
+#     volumeMounts:
+#     - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+#       name: default-token-f8c4x
+#       readOnly: true
+#   dnsPolicy: ClusterFirst
+#   enableServiceLinks: true
+#   nodeName: node01
+#   preemptionPolicy: PreemptLowerPriority
+#   priority: 0
+#   restartPolicy: Always
+#   schedulerName: default-scheduler
+#   securityContext: {}
+#   serviceAccount: default
+#   serviceAccountName: default
+#   terminationGracePeriodSeconds: 30
+#   tolerations:
+#   - effect: NoExecute
+#     key: node.kubernetes.io/not-ready
+#     operator: Exists
+#     tolerationSeconds: 300
+#   - effect: NoExecute
+#     key: node.kubernetes.io/unreachable
+#     operator: Exists
+#     tolerationSeconds: 300
+#   volumes:
+#   - name: default-token-f8c4x
+#     secret:
+#       defaultMode: 420
+#       secretName: default-token-f8c4x
+# status:
+#   conditions:
+#   - lastProbeTime: null
+#     lastTransitionTime: "2022-05-07T13:08:16Z"
+#     status: "True"
+#     type: Initialized
+#   - lastProbeTime: null
+#     lastTransitionTime: "2022-05-07T13:08:34Z"
+#     status: "True"
+#     type: Ready
+#   - lastProbeTime: null
+#     lastTransitionTime: "2022-05-07T13:08:34Z"
+#     status: "True"
+#     type: ContainersReady
+#   - lastProbeTime: null
+#     lastTransitionTime: "2022-05-07T13:08:16Z"
+#     status: "True"
+#     type: PodScheduled
+#   containerStatuses:
+#   - containerID: docker://f8983265c12a5a1b4756f4c97e7e8eb00ff55c3d525a5a619b74c265c4945ea8
+#     image: kodekloud/webapp-delayed-start:latest
+#     imageID: docker-pullable://kodekloud/webapp-delayed-start@sha256:666b95c2ef8e00a74fa0ea96def8d9d69104ec5d9b9b0f49d8a76bd4c94ad343
+#     lastState: {}
+#     name: pod-with-rprobe
+#     ready: true
+#     restartCount: 0
+#     started: true
+#     state:
+#       running:
+#         startedAt: "2022-05-07T13:08:33Z"
+#   hostIP: 10.23.40.12
+#   phase: Running
+#   podIP: 10.50.192.3
+#   podIPs:
+#   - ip: 10.50.192.3
+#   qosClass: BestEffort
+#   startTime: "2022-05-07T13:08:16Z"
+
+
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx1401
+  name: nginx1401
+  namespace: default
+spec:
+  containers:
+  - image: nginx
+    name: nginx1401
+    resources: {}
+    livenessProbe:
+      exec:
+        command:
+        - ls
+        - /var/www/html/probe
+      initialDelaySeconds: 10
+      periodSeconds: 60 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: whalesay
+spec:
+  backoffLimit: 6
+  completions: 5
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: docker/whalesay
+        command: ["sh", "-c", "cowsay I am going to ace CKAD!"]
+      restartPolicy: Never
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: multi-pod
+  name: multi-pod
+  namespace: default
+spec:
+  containers:
+  - image: nginx
+    name: jupiter
+    env:
+    - name: type
+      value: "planet"
+  - image: busybox
+    name: europa    
+    command: ["sh", "-c", "sleep 4800"]
+    env:
+    - name: type
+      value: "moon"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}     
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: custom-volume
+spec:
+  capacity:
+    storage: 50MiB
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow 
+  hostPath:
+    path: "/opt/data" 

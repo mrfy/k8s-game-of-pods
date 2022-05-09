@@ -1,31 +1,30 @@
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: pv-logs
+  name: pv-analytics
 spec:
   capacity:
-    storage: 1Gi
+    storage: 100Mi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
-    path: '/opt' ## this folder need exist on your node. Keep in minds also who have permissions to folder. Used tmp as it have 3x rwx
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - controlplane
+    path: '/pv/data-analytics'
 
 
-kind: PersistentVolumeClaim
+
 apiVersion: v1
+kind: Pod
 metadata:
-  name: pvc-logs
+  name: sega
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+  containers:
+  - name: tails
+    image: busybox
+    command: ['sh', '-c', 'sleep 3600']
+  - name: sonic
+    image: nginx
+    env:
+    - name: NGINX_PORT
+      value: 8080
+
